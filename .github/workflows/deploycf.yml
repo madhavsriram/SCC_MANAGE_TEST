@@ -15,16 +15,16 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       
       - name: Use Node.js
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
           node-version: 16.18.0
       - name: Install MTA Build Tool
         run: npm install -g mbt
     #Do not generate package-lock.json
-    #See https://blogs.sap.com/2020/07/07/escaping-eintegrity-hell/   
+    #See https://blogs.sap.com/2020/07/07/escaping-eintegrity-hell/
       - name: Disable package-lock.json
         run: npm config set package-lock false
       - name: Build MTA
