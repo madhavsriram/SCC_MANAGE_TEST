@@ -1,25 +1,32 @@
-# yaml-language-server: $schema=https://sap.github.io/ui5-tooling/schema/ui5.yaml.json
 specVersion: '3.0'
 metadata:
-  name: sccmanagecr
+  name: 'sccmanagecr'
 type: application
-resources:
-  configuration:
-    propertiesFileSourceEncoding: UTF-8
-builder:
-  resources:
-    excludes:
-      - "/test/**"
-      - "/localService/**"
-  customTasks:
-  - name: webide-extension-task-updateManifestJson
-    beforeTask: generateManifestBundle
+framework:
+  name: SAPUI5
+  version: '1.96.0'
+  libraries: 
+    - name: sap.m
+    - name: sap.ushell
+    - name: sap.ui.core
+    - name: sap.f
+    - name: sap.ui.comp
+    - name: sap.ui.table
+    - name: sap.suite.ui.generic.template
+    - name: sap.ui.generic.app
+    - name: themelib_sap_fiori_3
+server:
+  customMiddleware:
+  - name: fiori-tools-proxy
+    afterMiddleware: compression
     configuration:
-      appFolder: webapp
-      destDir: dist
-  - name: ui5-task-zipper
-    afterTask: generateCachebusterInfo
+      ignoreCertError: false # If set to true, certificate errors will be ignored. E.g. self-signed certificates will be accepted
+      backend:
+      - path: /v2
+        url: https://dpz-sc-dev-creditmanagement-credittrackerv1-srv.cfapps.us21.hana.ondemand.com
+        destination: CreditTrackerV1
+  - name: fiori-tools-appreload
+    afterMiddleware: compression
     configuration:
-      archiveName: sccmanagecr
-      additionalFiles:
-      - xs-app.json
+     port: 35729
+     path: webapp
